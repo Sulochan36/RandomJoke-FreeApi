@@ -16,9 +16,8 @@ function App() {
       setCopied(false);
 
       const data = await fetchRandomJoke();
-      console.log(data);
       setJoke(data);
-    } catch (err) {
+    } catch {
       setError("Failed to load joke 😅");
     } finally {
       setLoading(false);
@@ -39,20 +38,41 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
-      <h1>😂 Random Joke Viewer</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-100 px-4">
 
-      <button onClick={getJoke} disabled={loading}>
-        {loading ? "Loading..." : "Next Joke"}
-      </button>
+      <div className=" flex flex-col justify-center items-center w-full max-w-xl text-center">
 
-      {error && <p className="error">{error}</p>}
+        {/* HEADER */}
+        <h1 className="text-3xl md:text-4xl font-bold mb-2">
+          😂 Joke Machine
+        </h1>
 
-      {copied && <p className="success">Copied to clipboard!</p>}
+        <p className="text-sm text-gray-600 mb-6">
+          New jokes, one click at a time
+        </p>
 
-      {joke && !loading && (
-        <JokeCard joke={joke} onCopy={handleCopy} />
-      )}
+        {/* STATUS */}
+        {error && (
+          <p className="text-red-500 mb-4 text-sm">{error}</p>
+        )}
+
+        
+
+        {/* CARD */}
+        <JokeCard
+          joke={joke}
+          loading={loading}
+          onCopy={handleCopy}
+          onNext={getJoke}
+        />
+
+        {copied && (
+          <p className="text-green-600 text-bold border-2 border-green-500 shadow-2xl mb-4 text-sm w-fit mt-4 px-3 py-1 rounded-2xl animate-pulse">
+            Copied to clipboard 🎉
+          </p>
+        )}
+
+      </div>
     </div>
   );
 }
